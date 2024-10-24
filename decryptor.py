@@ -4,9 +4,8 @@ from cryptography.hazmat.primitives import padding
 from flask import Flask, request
 import binascii
 
-# Convert hex to bytes
-key = binascii.unhexlify("DFC170B2F484BB16CEA0EE8FFF53E21F")
-iv = binascii.unhexlify("7F2C02DE7B7EF2E879A12798232C21A6")
+import config
+
 
 def decrypt_message(encrypted_text, key, iv):
     # AES-128 decryption in CBC mode
@@ -24,7 +23,7 @@ def decrypt_message(encrypted_text, key, iv):
 
 app = Flask(__name__)
 
-@app.route('/upload', methods=['POST'])
+@app.route(f'/{config.upload_endpoint}', methods=['POST'])
 def upload():
     data = request.data  # Get raw binary data
     print("Received data from client")
@@ -33,4 +32,6 @@ def upload():
     return 'Data received', 200
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000)  # Listen on localhost at port 5000
+    key = binascii.unhexlify(config.key)
+    iv = binascii.unhexlify(config.iv)
+    app.run(host=config.server_ip, port=config.upload_port)  # Listen on localhost at port 5000

@@ -5,16 +5,14 @@ import requests
 import time
 import binascii
 
-key = binascii.unhexlify("DFC170B2F484BB16CEA0EE8FFF53E21F")  # Convert hex to bytes
-iv = binascii.unhexlify("7F2C02DE7B7EF2E879A12798232C21A6")    # Convert hex to bytes
-
+import config
 
 def send_data(data):
     count = 1
     while True:
         # Simulate sending some data
         try:
-            response = requests.post('http://127.0.0.1:5000/upload', data=data)
+            response = requests.post(f'http://{config.server_ip}:{config.upload_port}/{config.upload_endpoint}', data=data)
             print("Successfully sent " + str(count))
         except:
             print("Error connecting " + str(count))
@@ -37,5 +35,7 @@ def encrypt_message(plaintext, key, iv):
 
 
 if __name__ == "__main__":
+    key = binascii.unhexlify(config.key)
+    iv = binascii.unhexlify(config.iv)
     secret_message = "Hello World!"
     send_data(encrypt_message(secret_message, key, iv))
