@@ -1,7 +1,6 @@
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
-import os
 import requests
 import time
 import binascii
@@ -9,14 +8,17 @@ import binascii
 key = binascii.unhexlify("DFC170B2F484BB16CEA0EE8FFF53E21F")  # Convert hex to bytes
 iv = binascii.unhexlify("7F2C02DE7B7EF2E879A12798232C21A6")    # Convert hex to bytes
 
+
 def send_data(data):
+    count = 1
     while True:
         # Simulate sending some data
         try:
             response = requests.post('http://127.0.0.1:5000/upload', data=data)
-            print("Successfully sent")
+            print("Successfully sent " + str(count))
         except:
-            print("Error connecting")
+            print("Error connecting " + str(count))
+        count += 1
         time.sleep(2)  # Wait for 2 seconds before sending the next message
 
 
