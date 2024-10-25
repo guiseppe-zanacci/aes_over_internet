@@ -12,6 +12,8 @@ def decrypt_message(encrypted_text, key, iv):
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
     decryptor = cipher.decryptor()
 
+    encrypted_text = encrypted_text.decode('utf-8')
+
     # Decrypt the ciphertext
     decrypted_padded_message = decryptor.update(encrypted_text) + decryptor.finalize()
 
